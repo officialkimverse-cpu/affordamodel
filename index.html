@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Affordamodel — Model every assumption. Close the gap.</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ─────────────────────────────────────────────
+       LANDING — NAV
+    ───────────────────────────────────────────── */
+    .l-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 56px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .l-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1B2A4A;
+      letter-spacing: -0.5px;
+      cursor: pointer;
+    }
+    .l-logo span { color: #2A9D8F; }
+    .l-nav-right { display: flex; align-items: center; gap: 28px; }
+    .l-nav-link {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .l-nav-link:hover { color: #1B2A4A; }
+
+    .btn-teal {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 22px;
+      background: #2A9D8F;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+      line-height: 1;
+    }
+    .btn-teal:hover { background: #238a7e; }
+    .btn-teal:active { transform: scale(0.98); }
+    .btn-teal.lg { padding: 13px 30px; font-size: 0.95rem; border-radius: 8px; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      padding: 11px 28px;
+      background: transparent;
+      color: #1B2A4A;
+      border: 2px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      line-height: 1;
+    }
+    .btn-outline:hover { border-color: #2A9D8F; color: #2A9D8F; background: #f0faf9; }
+
+    /* ─────────────────────────────────────────────
+       LANDING — HERO
+    ───────────────────────────────────────────── */
+    .hero-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 88px 48px 80px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #e8f5f3;
+      color: #2A9D8F;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 22px;
+    }
+    .hero-wrap h1 {
+      font-size: 3.6rem;
+      font-weight: 800;
+      color: #1B2A4A;
+      letter-spacing: -2px;
+      line-height: 1.06;
+      margin-bottom: 16px;
+    }
+    .hero-tagline {
+      font-size: 1.2rem;
+      color: #2A9D8F;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: -0.2px;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      color: #5a6478;
+      max-width: 600px;
+      margin: 0 auto 36px;
+      line-height: 1.75;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .stat-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: #f8f9fb;
+      border: 1px solid #e5e7eb;
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.74rem;
+      color: #5a6478;
+      font-weight: 500;
+    }
+    .stat-pill b { color: #1B2A4A; font-weight: 700; }
+
+    /* ─────────────────────────────────────────────
+       LANDING — HOW IT WORKS
+    ───────────────────────────────────────────── */
+    .divider { height: 1px; background: #e5e7eb; }
+
+    .how-section {
+      background: #f8f9fb;
+      padding: 80px 56px;
+    }
+    .section-heading {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #1B2A4A;
+      letter-spacing: -0.6px;
+      margin-bottom: 42px;
+    }
+    .how-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      max-width: 1020px;
+    }
+    .how-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 30px 26px 26px;
+    }
+    .how-card-num {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #2A9D8F;
+      margin-bottom: 12px;
+    }
+    .how-card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1B2A4A;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .how-card-desc {
+      font-size: 0.82rem;
+      color: #6b7280;
+      line-height: 1.65;
+    }
+
+    /* ─────────────────────────────────────────────
+       LANDING — PROJECT SETUP
+    ───────────────────────────────────────────── */
+    .setup-section {
+      padding: 80px 56px;
+      background: #fff;
+    }
+    .setup-inner { max-width: 780px; }
+
+    .setup-tabs {
+      display: flex;
+      border-bottom: 2px solid #e5e7eb;
+      margin-bottom: 36px;
+    }
+    .setup-tab {
+      padding: 10px 26px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #9ca3af;
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2.5px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .setup-tab.active { color: #1B2A4A; border-bottom-color: #2A9D8F; }
+    .setup-tab:hover:not(.active) { color: #374151; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 26px;
+      margin-bottom: 28px;
+    }
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .fg.full { grid-column: 1 / -1; }
+    .fl {
+      font-size: 0.775rem;
+      font-weight: 600;
+      color: #374151;
+    }
+    .fl .opt { font-weight: 400; color: #9ca3af; }
+    .fi {
+      padding: 9px 12px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 7px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      color: #1a1a2e;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+    .fi:focus { outline: none; border-color: #2A9D8F; box-shadow: 0 0 0 3px rgba(42,157,143,0.12); }
+    .fi.readonly { background: #f3f4f6; color: #6b7280; cursor: default; }
+    textarea.fi { resize: vertical; min-height: 82px; }
+
+    /* Sliders */
+    .slider-block { margin-bottom: 28px; }
+    .slider-block-label {
+      font-size: 0.775rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 14px;
+    }
+    .mix-wrap { display: flex; gap: 28px; align-items: flex-start; }
+    .mix-sliders { flex: 1; display: flex; flex-direction: column; gap: 11px; }
+    .msr {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .msr-label {
+      width: 72px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    input[type=range].sl {
+      flex: 1;
+      height: 4px;
+      cursor: pointer;
+      accent-color: #2A9D8F;
+    }
+    .msr-val {
+      width: 36px;
+      text-align: right;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1B2A4A;
+    }
+    .mix-remain {
+      font-size: 0.72rem;
+      color: #6b7280;
+      margin-top: 5px;
+    }
+    .mix-remain.over { color: #dc2626; font-weight: 600; }
+
+    .donut-wrap { width: 96px; flex-shrink: 0; text-align: center; }
+    .donut-wrap canvas { display: block; }
+    .donut-label { font-size: 0.62rem; color: #9ca3af; margin-top: 5px; }
+
+    .ssr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+    .ssr-label {
+      width: 196px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #374151;
+      flex-shrink: 0;
+    }
+    .ssr-val {
+      width: 52px;
+      text-align: right;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #2A9D8F;
+    }
+
+    /* Upload zone */
+    .upload-zone {
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      padding: 52px 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      background: #fafafa;
+      margin-bottom: 20px;
+    }
+    .upload-zone:hover, .upload-zone.drag { border-color: #2A9D8F; background: #f0faf9; }
+    .upload-icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .upload-label { font-size: 0.95rem; font-weight: 700; color: #1B2A4A; margin-bottom: 6px; }
+    .upload-sub { font-size: 0.8rem; color: #6b7280; margin-bottom: 6px; }
+    .upload-formats { font-size: 0.7rem; color: #9ca3af; }
+    .upload-fname {
+      display: none;
+      margin-top: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #2A9D8F;
+      background: #e8f5f3;
+      border-radius: 5px;
+      padding: 5px 12px;
+      display: none;
+    }
+    .upload-explain {
+      font-size: 0.82rem;
+      color: #6b7280;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    details.override {
+      border: 1.5px solid #e5e7eb;
+      border-radius: 9px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+    details.override summary {
+      padding: 12px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      background: #f8f9fb;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    details.override summary::after { content: '▾'; font-size: 0.75rem; margin-left: auto; }
+    details[open].override summary::after { content: '▴'; }
+    .override-body { padding: 18px; }
+
+    .form-submit {
+      width: 100%;
+      padding: 15px;
+      background: #2A9D8F;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+    .form-submit:hover { background: #238a7e; }
+    .form-submit:disabled { background: #9ca3af; cursor: not-allowed; }
+    .submit-note { font-size: 0.7rem; color: #9ca3af; text-align: center; margin-top: 8px; }
+
+    /* ─────────────────────────────────────────────
+       LOADING OVERLAY
+    ───────────────────────────────────────────── */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(27,42,74,0.75);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .loading-overlay.show { display: flex; }
+    .loading-spinner {
+      width: 46px;
+      height: 46px;
+      border: 4px solid rgba(255,255,255,0.25);
+      border-top-color: #2A9D8F;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    .loading-text {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────── */
+    .l-footer {
+      background: #1B2A4A;
+      color: rgba(255,255,255,0.55);
+      padding: 36px 56px;
+      text-align: center;
+    }
+    .l-footer .footer-brand { font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 8px; }
+    .l-footer .footer-note { font-size: 0.72rem; line-height: 1.7; max-width: 560px; margin: 0 auto; }
+
+    /* ─────────────────────────────────────────────
+       TOOL APP
+    ───────────────────────────────────────────── */
+    #tool {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      background: #eef1f5;
+    }
+    #tool.active { display: flex; }
+
+    /* Project bar */
+    .project-bar {
+      background: #1B2A4A;
+      color: #fff;
+      padding: 0 16px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    .pb-logo {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #2A9D8F;
+      letter-spacing: -0.3px;
+      flex-shrink: 0;
+      margin-right: 2px;
+    }
+    .pb-sep { color: rgba(255,255,255,0.18); }
+    .pb-name { font-size: 0.8rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
+    .pb-meta { font-size: 0.7rem; opacity: 0.55; white-space: nowrap; }
+    .pb-new-btn {
+      margin-left: auto;
+      font-size: 0.7rem;
+      color: #2A9D8F;
+      border: 1px solid rgba(42,157,143,0.5);
+      padding: 4px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      background: none;
+      font-weight: 600;
+      font-family: inherit;
+      transition: background 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pb-new-btn:hover { background: rgba(42,157,143,0.12); }
+
+    /* Main 3-col layout */
+    .main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Pro forma sidebar */
+    .pf-wrapper {
+      display: flex;
+      flex-shrink: 0;
+      transition: width 0.25s ease;
+      overflow: hidden;
+    }
+    .pf-wrapper.collapsed { width: 32px; }
+    .pf-wrapper.open { width: 372px; }
+
+    .pf-toggle {
+      width: 32px;
+      background: #1B2A4A;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 12px 0;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .pf-toggle:hover { background: #2A9D8F; }
+
+    .pf-panel {
+      width: 340px;
+      background: #fff;
+      overflow-y: auto;
+      border-right: 1px solid #dde1e8;
+      padding: 14px 14px 28px;
+      flex-shrink: 0;
+      font-size: 13px;
+    }
+    .pf-wrapper.collapsed .pf-panel { display: none; }
+
+    .pf-head { font-size: 0.8rem; font-weight: 700; color: #1B2A4A; margin-bottom: 10px; }
+    .pf-section { margin-bottom: 14px; }
+    .pf-section-title {
+      font-size: 0.61rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #1B2A4A;
+      border-bottom: 2px solid #2A9D8F;
+      padding-bottom: 3px;
+      margin-bottom: 7px;
+    }
+    .pf-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5px 0;
+      min-height: 26px;
+    }
+    .pf-row.subtotal { border-top: 1px solid #e0e3ea; font-weight: 600; margin-top: 3px; padding-top: 4px; }
+    .pf-row.highlight {
+      background: #fff4cc;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-weight: 700;
+      color: #7a5c00;
+      margin: 3px -4px;
+    }
+    .pf-label { color: #4b5563; line-height: 1.2; }
+    .pf-value { font-weight: 500; color: #1B2A4A; white-space: nowrap; }
+    .pf-value.good { color: #15803d; }
+    .pf-value.bad  { color: #b91c1c; }
+
+    input.pf-in {
+      width: 88px;
+      padding: 2px 6px;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      text-align: right;
+      font-family: inherit;
+      color: #1a1a2e;
+    }
+    input.pf-in:focus { outline: none; border-color: #2A9D8F; box-shadow: 0 0 0 2px rgba(42,157,143,0.15); }
+    input.pf-in.narrow { width: 52px; }
+    input.pf-in.wide   { width: 110px; }
+
+    .mix-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2.5px 0 2.5px 6px;
+      border-left: 3px solid #ccc;
+      margin-bottom: 3px;
+    }
+    .mix-label { flex: 1; font-size: 0.72rem; color: #4b5563; }
+    .mix-pct-label { font-size: 0.65rem; color: #9ca3af; margin: 0 1px; }
+
+    /* Tracker */
+    .tracker {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 14px;
+      background: #fff;
+      border-right: 1px solid #dde1e8;
+    }
+    .tracker-title { font-size: 0.82rem; font-weight: 700; color: #1B2A4A; margin-bottom: 8px; flex-shrink: 0; }
+    .chart-wrap { flex: 1; min-height: 0; position: relative; }
+    .table-wrap {
+      max-height: 172px;
+      overflow-y: auto;
+      flex-shrink: 0;
+      margin-top: 8px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: #1B2A4A;
+      color: #fff;
+      padding: 6px 8px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-align: left;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    tbody td { padding: 5px 8px; font-size: 0.72rem; border-bottom: 1px solid #f0f2f5; vertical-align: middle; }
+    tbody tr:hover td { background: #f0faf9; }
+    .td-num { font-weight: 700; color: #1B2A4A; text-align: center; }
+    .td-good { color: #15803d; font-weight: 600; }
+    .td-bad  { color: #b91c1c; font-weight: 600; }
+    .td-change { max-width: 200px; }
+
+    /* Chat */
+    .chat {
+      width: 340px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: #fafbfc;
+      font-size: 13px;
+    }
+    .chat-header {
+      padding: 10px 14px 9px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f4f6fa;
+      flex-shrink: 0;
+    }
+    .chat-header h3 { font-size: 0.8rem; font-weight: 700; color: #1B2A4A; margin-bottom: 7px; }
+    .apikey-row { display: flex; gap: 5px; align-items: center; }
+    .apikey-input {
+      flex: 1;
+      padding: 4px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      font-size: 0.7rem;
+      font-family: 'SF Mono', Menlo, monospace;
+      background: #fff;
+    }
+    .apikey-input:focus { outline: none; border-color: #2A9D8F; }
+    .btn-sm {
+      padding: 4px 10px;
+      background: #2A9D8F;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      font-weight: 600;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .btn-sm:hover { background: #238a7e; }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .msg {
+      padding: 8px 11px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      max-width: 90%;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .msg.user { align-self: flex-end; background: #1B2A4A; color: #fff; border-radius: 8px 8px 2px 8px; }
+    .msg.ai { align-self: flex-start; background: #e8f5f3; color: #111827; border-left: 3px solid #2A9D8F; border-radius: 0 8px 8px 8px; }
+    .msg.sys { align-self: center; background: #f0f9ff; color: #6b7280; font-size: 0.68rem; text-align: center; border-radius: 5px; padding: 3px 10px; max-width: 100%; }
+    .msg.err { align-self: center; background: #fef2f2; color: #991b1b; font-size: 0.7rem; border-radius: 5px; padding: 5px 10px; max-width: 100%; }
+    .chat-input-wrap { padding: 10px 12px; border-top: 1px solid #e5e7eb; background: #f4f6fa; flex-shrink: 0; }
+    .chat-input-row { display: flex; gap: 7px; }
+    .chat-ta {
+      flex: 1;
+      padding: 7px 10px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      resize: none;
+      height: 58px;
+      font-family: inherit;
+      background: #fff;
+      line-height: 1.4;
+    }
+    .chat-ta:focus { outline: none; border-color: #2A9D8F; box-shadow: 0 0 0 2px rgba(42,157,143,0.12); }
+    .send-btn {
+      padding: 7px 14px;
+      background: #2A9D8F;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      align-self: flex-end;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+    .send-btn:hover:not(:disabled) { background: #238a7e; }
+    .send-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+    .chat-hint { font-size: 0.62rem; color: #9ca3af; margin-top: 5px; }
+
+    /* ── Traffic light ── */
+    .tl { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 3px; vertical-align: middle; flex-shrink: 0; }
+    .tl-g { background: #16a34a; box-shadow: 0 0 0 2px rgba(22,163,74,0.2); }
+    .tl-y { background: #ca8a04; box-shadow: 0 0 0 2px rgba(202,138,4,0.2); }
+    .tl-r { background: #dc2626; box-shadow: 0 0 0 2px rgba(220,38,38,0.2); }
+    .tl-wrap { display: flex; align-items: center; gap: 0; white-space: nowrap; }
+    .tl-text { font-size: 0.65rem; color: #6b7280; }
+    .tl-text.lendable { color: #15803d; }
+    .tl-text.borderline { color: #92400e; }
+    .tl-text.nolend { color: #b91c1c; }
+
+    /* ── Scenario summary card ── */
+    .summary-card {
+      display: none;
+      flex-shrink: 0;
+      background: #f8f9fb;
+      border: 1px solid #e5e7eb;
+      border-radius: 7px;
+      padding: 8px 14px;
+      margin-bottom: 8px;
+      gap: 0;
+    }
+    .summary-card.visible { display: flex; }
+    .sc-item {
+      flex: 1;
+      padding: 0 12px;
+      border-right: 1px solid #e5e7eb;
+    }
+    .sc-item:first-child { padding-left: 0; }
+    .sc-item:last-child { border-right: none; }
+    .sc-cat {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #9ca3af;
+      margin-bottom: 3px;
+    }
+    .sc-val { font-size: 0.78rem; font-weight: 700; color: #1B2A4A; line-height: 1.2; }
+    .sc-sub { font-size: 0.65rem; color: #6b7280; }
+
+    /* ── Second chart ── */
+    .chart-wrap2 {
+      height: 135px;
+      flex-shrink: 0;
+      position: relative;
+      margin-top: 8px;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 4px;
+    }
+
+    /* Wider table needs horizontal scroll */
+    .table-wrap { overflow-x: auto; }
+    .td-funded { color: #15803d; font-weight: 600; font-size: 0.65rem; }
+
+    /* ── Funding Stack panel ── */
+    .fs-panel {
+      flex-shrink: 0;
+      background: #f8f9fb;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 14px 12px;
+      margin-bottom: 10px;
+    }
+    .fs-header { font-size: 0.72rem; font-weight: 700; color: #1B2A4A; margin-bottom: 1px; }
+    .fs-sub { font-size: 0.6rem; color: #9ca3af; margin-bottom: 8px; }
+    /* Stacked bar */
+    .fs-bar {
+      display: flex;
+      height: 28px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .fs-seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: width 0.25s;
+      position: relative;
+    }
+    .fs-seg-label {
+      font-size: 0.52rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 3px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      pointer-events: none;
+    }
+    /* Segment colors */
+    .fs-fed-hist  { background: #2A9D8F; }
+    .fs-nys-hist  { background: #52b9ad; }
+    .fs-lihtc     { background: #1B2A4A; }
+    .fs-debt      { background: #4a6fa5; }
+    .fs-hcr       { background: #d97706; }
+    .fs-county    { background: #fbbf24; }
+    .fs-gap       { background: #dc2626; }
+    /* Source cards grid */
+    .fs-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .fs-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 5px;
+      padding: 6px 8px;
+    }
+    .fs-card-name { font-size: 0.62rem; font-weight: 700; color: #1B2A4A; margin-bottom: 1px; }
+    .fs-card-prog { font-size: 0.56rem; color: #6b7280; margin-bottom: 4px; line-height: 1.3; }
+    .fs-card-row { display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+    .fs-card-label { font-size: 0.58rem; color: #6b7280; }
+    .fs-card-input {
+      width: 44px;
+      font-size: 0.65rem;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      padding: 1px 4px;
+      text-align: right;
+      font-family: inherit;
+      color: #1B2A4A;
+    }
+    .fs-card-input:focus { outline: none; border-color: #2A9D8F; }
+    .fs-card-input[readonly] { background: #f3f4f6; color: #6b7280; cursor: not-allowed; }
+    .fs-card-note { font-size: 0.54rem; color: #9ca3af; line-height: 1.35; }
+    /* Summary line */
+    .fs-summary { font-size: 0.65rem; font-weight: 600; margin-top: 2px; }
+    .fs-summary.gap   { color: #dc2626; }
+    .fs-summary.funded { color: #15803d; }
+    .fs-warn { font-size: 0.6rem; color: #b45309; background: #fef3c7; border-radius: 3px; padding: 2px 6px; margin-bottom: 4px; display: none; }
+    .fs-warn.show { display: block; }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c0c8d8; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     LANDING PAGE
+════════════════════════════════════════════ -->
+<div id="landing">
+
+  <nav class="l-nav">
+    <div class="l-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      Afforda<span>model</span>
+    </div>
+    <div class="l-nav-right">
+      <a href="#s2" class="l-nav-link">How it works</a>
+      <button class="btn-teal" onclick="scrollToSetup()">Start Modeling</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="s1">
+    <div class="hero-wrap">
+      <div class="hero-badge">Affordable Housing Finance</div>
+      <h1>Affordamodel</h1>
+      <div class="hero-tagline">Model every assumption. Close the gap.</div>
+      <p class="hero-desc">An AI-powered pro forma explorer built specifically for affordable housing development. Test financing assumptions in plain English, track how your IRR and equity gap respond across every scenario, and arrive at defensible numbers faster.</p>
+      <div class="hero-ctas">
+        <button class="btn-teal lg" onclick="scrollToSetup('new')">Start a New Project</button>
+        <button class="btn-outline" onclick="scrollToSetup('upload')">Upload Existing Pro Forma</button>
+      </div>
+      <div class="stat-pills">
+        <span class="stat-pill"><b>2,600</b> units modeled</span>
+        <span class="stat-pill">Westchester AMI 2024 built in</span>
+        <span class="stat-pill">Scenario tracking included</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- How it works -->
+  <section id="s2" class="how-section">
+    <div style="max-width:1020px;margin:0 auto">
+      <div class="section-heading">How Affordamodel works</div>
+      <div class="how-cards">
+        <div class="how-card">
+          <div class="how-card-num">01</div>
+          <div class="how-card-title">Set up your project</div>
+          <p class="how-card-desc">Enter your site details, unit count, AMI mix, and financing context. This becomes your Scenario 0 baseline — the foundation every future assumption change is measured against.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-card-num">02</div>
+          <div class="how-card-title">Test assumptions in plain English</div>
+          <p class="how-card-desc">Type things like "increase tax abatement to 20%" or "change vacancy to 7%". Affordamodel interprets it, updates the pro forma, and explains the impact on your IRR and equity gap.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-card-num">03</div>
+          <div class="how-card-title">Track every scenario</div>
+          <p class="how-card-desc">Every change is logged to a live chart. See exactly how outputs shift as assumptions evolve. Export your full assumption history when you're done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Project Setup -->
+  <section id="s3" class="setup-section">
+    <div class="setup-inner">
+      <div class="section-heading">Set up your project</div>
+
+      <div class="setup-tabs">
+        <button class="setup-tab active" id="tabNewBtn" onclick="switchTab('new')">New Project</button>
+        <button class="setup-tab" id="tabUploadBtn" onclick="switchTab('upload')">Upload Existing Pro Forma</button>
+      </div>
+
+      <!-- ── Tab: New Project ── -->
+      <div class="tab-pane active" id="tabNew">
+        <div class="form-grid">
+          <div class="fg">
+            <label class="fl" for="projName">Project name</label>
+            <input type="text" id="projName" class="fi" placeholder="e.g. Domino Sugar Factory — Yonkers" />
+          </div>
+          <div class="fg">
+            <label class="fl" for="projLoc">Location / address</label>
+            <input type="text" id="projLoc" class="fi" placeholder="e.g. Yonkers, NY" />
+          </div>
+          <div class="fg">
+            <label class="fl" for="projZoning">Zoning designation <span class="opt">optional</span></label>
+            <input type="text" id="projZoning" class="fi" placeholder="e.g. Mixed-Use / R7-2" />
+          </div>
+          <div class="fg">
+            <label class="fl" for="projUnits">Total units</label>
+            <input type="number" id="projUnits" class="fi" value="100" min="1" />
+          </div>
+          <div class="fg">
+            <label class="fl" for="projSiteArea">Site area (SF) <span class="opt">optional</span></label>
+            <input type="number" id="projSiteArea" class="fi" placeholder="e.g. 45,000" />
+          </div>
+          <div class="fg">
+            <label class="fl" for="projGrossSF">Gross buildable SF <span class="opt">optional</span></label>
+            <input type="number" id="projGrossSF" class="fi" placeholder="e.g. 90,000" />
+          </div>
+          <div class="fg">
+            <label class="fl" for="projLandCost">Land / acquisition cost ($)</label>
+            <input type="number" id="projLandCost" class="fi" value="0" min="0" />
+          </div>
+          <div class="fg">
+            <label class="fl" for="projFinancing">Financing structure</label>
+            <select id="projFinancing" class="fi">
+              <option value="9">9% LIHTC</option>
+              <option value="4">4% LIHTC + Tax-Exempt Bonds</option>
+              <option value="0">HPD Subsidy + Conventional Debt</option>
+              <option value="9">Not decided yet</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl">AMI reference</label>
+            <input type="text" class="fi readonly" value="Westchester County, NY — HUD 2024" readonly />
+          </div>
+          <div class="fg full">
+            <label class="fl" for="projNotes">Notes <span class="opt">optional</span></label>
+            <textarea id="projNotes" class="fi" placeholder="Any context about the site, deal structure, or constraints — e.g. adaptive reuse, historic tax credits, phased delivery"></textarea>
+          </div>
+        </div>
+
+        <!-- Unit mix sliders -->
+        <div class="slider-block">
+          <div class="slider-block-label">Unit mix by AMI tier</div>
+          <div class="mix-wrap">
+            <div class="mix-sliders">
+              <div class="msr">
+                <span class="msr-label" style="color:#b91c1c">30% AMI</span>
+                <input type="range" class="sl" id="sl30" min="0" max="100" step="5" value="20" oninput="updateMix()" />
+                <span class="msr-val" id="sv30">20%</span>
+              </div>
+              <div class="msr">
+                <span class="msr-label" style="color:#d97706">50% AMI</span>
+                <input type="range" class="sl" id="sl50" min="0" max="100" step="5" value="30" oninput="updateMix()" />
+                <span class="msr-val" id="sv50">30%</span>
+              </div>
+              <div class="msr">
+                <span class="msr-label" style="color:#ca8a04">60% AMI</span>
+                <input type="range" class="sl" id="sl60" min="0" max="100" step="5" value="30" oninput="updateMix()" />
+                <span class="msr-val" id="sv60">30%</span>
+              </div>
+              <div class="msr">
+                <span class="msr-label" style="color:#15803d">80% AMI</span>
+                <input type="range" class="sl" id="sl80" min="0" max="100" step="5" value="20" oninput="updateMix()" />
+                <span class="msr-val" id="sv80">20%</span>
+              </div>
+              <div class="mix-remain" id="mixRemain">Market Rate: 0% · Total: 100% ✓</div>
+            </div>
+            <div class="donut-wrap">
+              <canvas id="mixDonut" width="96" height="96"></canvas>
+              <div class="donut-label">Unit mix</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial assumption sliders -->
+        <div class="slider-block">
+          <div class="slider-block-label">Key financial assumptions</div>
+          <div class="ssr">
+            <span class="ssr-label">Construction cost / SF</span>
+            <input type="range" class="sl" id="slCost" min="150" max="500" step="10" value="280" oninput="slv('Cost','$',this.value,'')">
+            <span class="ssr-val" id="svCost">$280</span>
+          </div>
+          <div class="ssr">
+            <span class="ssr-label">Soft costs (% of hard costs)</span>
+            <input type="range" class="sl" id="slSoft" min="15" max="35" step="1" value="25" oninput="slv('Soft','',this.value,'%')">
+            <span class="ssr-val" id="svSoft">25%</span>
+          </div>
+          <div class="ssr">
+            <span class="ssr-label">Tax abatement (%)</span>
+            <input type="range" class="sl" id="slAbate" min="0" max="100" step="5" value="0" oninput="slv('Abate','',this.value,'%')">
+            <span class="ssr-val" id="svAbate">0%</span>
+          </div>
+          <div class="ssr">
+            <span class="ssr-label">Vacancy rate (%)</span>
+            <input type="range" class="sl" id="slVac" min="0" max="20" step="0.5" value="5" oninput="slv('Vac','',this.value,'%')">
+            <span class="ssr-val" id="svVac">5%</span>
+          </div>
+        </div>
+
+        <button class="form-submit" onclick="submitProject('new')">Build My Baseline</button>
+      </div>
+
+      <!-- ── Tab: Upload ── -->
+      <div class="tab-pane" id="tabUpload">
+        <div class="upload-zone" id="uploadZone"
+             onclick="document.getElementById('fileInput').click()"
+             ondragover="event.preventDefault();this.classList.add('drag')"
+             ondragleave="this.classList.remove('drag')"
+             ondrop="handleDrop(event)">
+          <div class="upload-icon">📄</div>
+          <div class="upload-label">Upload your existing pro forma</div>
+          <div class="upload-sub">Drag and drop, or click to browse</div>
+          <div class="upload-formats">Accepts .xlsx · .csv · .pdf</div>
+          <div class="upload-fname" id="uploadFname"></div>
+        </div>
+        <input type="file" id="fileInput" accept=".xlsx,.csv,.pdf" style="display:none" onchange="handleFileSelect(event)" />
+
+        <p class="upload-explain">Affordamodel will use your file as the Scenario 0 baseline and focus on tracking assumption changes and outputs from there. Key fields will be extracted where possible.</p>
+
+        <details class="override">
+          <summary>Override or fill missing fields</summary>
+          <div class="override-body">
+            <div style="font-size:0.74rem;color:#9ca3af;margin-bottom:14px">These values apply if they couldn't be parsed from your file.</div>
+            <div class="form-grid" style="margin-bottom:16px">
+              <div class="fg">
+                <label class="fl">Total units</label>
+                <input type="number" id="upUnits" class="fi" value="100" min="1" />
+              </div>
+              <div class="fg">
+                <label class="fl">Land / acquisition cost ($)</label>
+                <input type="number" id="upLandCost" class="fi" value="0" min="0" />
+              </div>
+              <div class="fg">
+                <label class="fl">Financing structure</label>
+                <select id="upFinancing" class="fi">
+                  <option value="9">9% LIHTC</option>
+                  <option value="4">4% LIHTC + Tax-Exempt Bonds</option>
+                  <option value="0">HPD Subsidy + Conventional Debt</option>
+                  <option value="9">Not decided yet</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="fl">Vacancy rate (%)</label>
+                <input type="number" id="upVacancy" class="fi" value="5" step="0.5" />
+              </div>
+            </div>
+            <div class="ssr">
+              <span class="ssr-label">Construction cost / SF</span>
+              <input type="range" class="sl" id="slUpCost" min="150" max="500" step="10" value="280" oninput="slv('UpCost','$',this.value,'')">
+              <span class="ssr-val" id="svUpCost">$280</span>
+            </div>
+            <div class="ssr">
+              <span class="ssr-label">Tax abatement (%)</span>
+              <input type="range" class="sl" id="slUpAbate" min="0" max="100" step="5" value="0" oninput="slv('UpAbate','',this.value,'%')">
+              <span class="ssr-val" id="svUpAbate">0%</span>
+            </div>
+          </div>
+        </details>
+
+        <button class="form-submit" id="uploadSubmitBtn" onclick="submitProject('upload')" disabled>
+          Use This File as Baseline
+        </button>
+        <p class="submit-note" id="uploadNote">Upload a file above to continue</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="l-footer">
+    <div class="footer-brand">Affordamodel — Built for affordable housing finance modeling</div>
+    <p class="footer-note">AMI limits based on HUD 2024 Westchester County data. All outputs are estimates for planning purposes only.</p>
+  </footer>
+
+</div><!-- #landing -->
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loadingText">Building your baseline…</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     TOOL APP
+════════════════════════════════════════════ -->
+<div id="tool">
+
+  <div class="project-bar">
+    <span class="pb-logo">Affordamodel</span>
+    <span class="pb-sep">|</span>
+    <span class="pb-name" id="pbName">Project</span>
+    <span class="pb-meta" id="pbMeta"></span>
+    <button class="pb-new-btn" onclick="resetToLanding()">+ New Project</button>
+  </div>
+
+  <div class="main">
+
+    <div class="pf-wrapper collapsed" id="pfWrapper">
+      <button class="pf-toggle" id="pfToggle" onclick="togglePF()">PRO&nbsp;FORMA&nbsp;▶</button>
+      <div class="pf-panel" id="pfPanel"></div>
+    </div>
+
+    <div class="tracker">
+      <div class="tracker-title">Scenario Tracker</div>
+
+      <div class="summary-card" id="summaryCard" style="display:none">
+        <div class="sc-item" id="scBestGap"></div>
+        <div class="sc-item" id="scBestIRR"></div>
+        <div class="sc-item" id="scBestDSCR"></div>
+      </div>
+
+      <!-- Funding Stack panel -->
+      <div class="fs-panel" id="fsPanel">
+        <div class="fs-header">Targeted Funding Stack</div>
+        <div class="fs-sub">Sources strategy for closing the equity gap</div>
+        <div class="fs-warn" id="fsWarn">Sources exceed TDC — adjust allocations</div>
+        <div class="fs-bar" id="fsBar"></div>
+        <div class="fs-cards" id="fsCards">
+          <!-- Fed Historic -->
+          <div class="fs-card">
+            <div class="fs-card-name" style="color:#2A9D8F">Federal Historic Tax Credit</div>
+            <div class="fs-card-prog">Federal IRS Section 47</div>
+            <div class="fs-card-row">
+              <span class="fs-card-label">% of TDC</span>
+              <input class="fs-card-input" type="number" id="fsFedHist" value="20" min="0" max="100" step="0.5" oninput="renderFundingStack()">
+            </div>
+            <div class="fs-card-note">Eligible if structure is listed or eligible for National Register — Domino Sugar Factory qualifies as historic industrial</div>
+          </div>
+          <!-- NYS Historic -->
+          <div class="fs-card">
+            <div class="fs-card-name" style="color:#52b9ad">NYS Historic Tax Credit</div>
+            <div class="fs-card-prog">NYS RPTL Section 606</div>
+            <div class="fs-card-row">
+              <span class="fs-card-label">% of TDC</span>
+              <input class="fs-card-input" type="number" id="fsNYSHist" value="20" min="0" max="100" step="0.5" oninput="renderFundingStack()">
+            </div>
+            <div class="fs-card-note">Additional 20% state credit — combinable with federal for up to 40% total rehab credit</div>
+          </div>
+          <!-- LIHTC Equity -->
+          <div class="fs-card">
+            <div class="fs-card-name" style="color:#1B2A4A">LIHTC Equity</div>
+            <div class="fs-card-prog">HCR Unified Funding — 9% LIHTC</div>
+            <div class="fs-card-row">
+              <span class="fs-card-label">% of TDC</span>
+              <input class="fs-card-input" type="number" id="fsLIHTC" value="25" min="0" max="100" step="0.5" oninput="renderFundingStack()">
+            </div>
+            <div class="fs-card-note">9% credit preferred for max equity; 4% + bonds for 2,600+ unit scale</div>
+          </div>
+          <!-- Permanent Debt (read-only) -->
+          <div class="fs-card">
+            <div class="fs-card-name" style="color:#4a6fa5">Permanent Debt</div>
+            <div class="fs-card-prog">Fannie Mae / FHA</div>
+            <div class="fs-card-row">
+              <span class="fs-card-label">% of TDC</span>
+              <input class="fs-card-input" type="number" id="fsDebt" readonly>
+            </div>
+            <div class="fs-card-note">Sized to NOI / 1.15x DSCR — updates with pro forma</div>
+          </div>
+          <!-- HCR HOME -->
+          <div class="fs-card">
+            <div class="fs-card-name" style="color:#d97706">HCR / HOME Gap Financing</div>
+            <div class="fs-card-prog">HCR HOME Program</div>
+            <div class="fs-card-row">
+              <span class="fs-card-label">% of TDC</span>
+              <input class="fs-card-input" type="number" id="fsHCR" value="8" min="0" max="100" step="0.5" oninput="renderFundingStack()">
+            </div>
+            <div class="fs-card-note">Gap financing for affordable units — applied through HCR Unified Funding</div>
+          </div>
+          <!-- County Trust Fund -->
+          <div class="fs-card">
+            <div class="fs-card-name" style="color:#d97706">Westchester County Trust Fund</div>
+            <div class="fs-card-prog">Westchester County AHTF</div>
+            <div class="fs-card-row">
+              <span class="fs-card-label">% of TDC</span>
+              <input class="fs-card-input" type="number" id="fsCounty" value="3" min="0" max="100" step="0.5" oninput="renderFundingStack()">
+            </div>
+            <div class="fs-card-note">Westchester Affordable Housing Trust Fund — county-level gap financing</div>
+          </div>
+        </div>
+        <div class="fs-summary" id="fsSummary"></div>
+      </div>
+
+      <div class="chart-wrap"><canvas id="trackerChart"></canvas></div>
+      <div class="chart-wrap2"><canvas id="dscrChart"></canvas></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30px;text-align:center">#</th>
+              <th>Change Made</th>
+              <th>IRR</th>
+              <th>Equity Gap</th>
+              <th>DSCR</th>
+              <th>NOI</th>
+              <th>Dev Yield</th>
+              <th>$/Unit</th>
+            </tr>
+          </thead>
+          <tbody id="scenarioTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="chat">
+      <div class="chat-header">
+        <h3>AI Assumption Assistant</h3>
+        <div class="apikey-row">
+          <input type="password" id="apiKeyInput" class="apikey-input" placeholder="sk-ant-api03-… (Anthropic API key)" />
+          <button class="btn-sm" onclick="saveKey()">Save</button>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMsgs"></div>
+      <div class="chat-input-wrap">
+        <div class="chat-input-row">
+          <textarea id="chatTA" class="chat-ta" placeholder='e.g. "increase tax abatement to 20%" or "set vacancy to 7%"'></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
+        </div>
+        <div class="chat-hint">Enter to send · Shift+Enter for new line · AI interprets → JS calculates</div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- #tool -->
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════════ */
+const DEFAULTS = {
+  units: 100, avg_unit_sf: 300, cost_per_sf: 280, land_cost: 0, soft_cost_pct: 25,
+  tax_credit_rate: 9, credit_price: 85,
+  dscr_requirement: 1.15, mortgage_rate: 5.5, amortization_years: 35,
+  vacancy_rate: 5,
+  mix_pct30: 20, mix_pct50: 30, mix_pct60: 30, mix_pct80: 20, mix_market: 0,
+  rent_30: 850, rent_50: 1400, rent_60: 1650, rent_80: 2100, rent_market: 2500,
+  opex_per_unit: 8500, tax_abatement: 0, tax_rate_pct: 1.2,
+  capex_reserve_per_unit: 500, sale_cap_rate: 5.5,
+};
+
+let A = { ...DEFAULTS };
+let scenarios = [];
+let chart = null;
+let chart2 = null;
+let mixDonutChart = null;
+let uploadedFile = null;
+let projectMeta = {};
+let apiKey = localStorage.getItem('am_apikey') || '';
+const MODEL = 'claude-sonnet-4-6'; // change here if Anthropic releases a newer ID
+
+/* ══════════════════════════════════════════════════════════════
+   CALCULATIONS
+══════════════════════════════════════════════════════════════ */
+function calcPF(a) {
+  const hardCosts = a.units * a.avg_unit_sf * a.cost_per_sf;
+  const softCosts = hardCosts * (a.soft_cost_pct / 100);
+  const tdc = a.land_cost + hardCosts + softCosts;
+
+  const blended =
+    (a.mix_pct30 / 100) * a.rent_30 + (a.mix_pct50 / 100) * a.rent_50 +
+    (a.mix_pct60 / 100) * a.rent_60 + (a.mix_pct80 / 100) * a.rent_80 +
+    (a.mix_market / 100) * a.rent_market;
+  const grossAnnual = a.units * blended * 12;
+  const vacancyLoss = grossAnnual * (a.vacancy_rate / 100);
+  const egi = grossAnnual - vacancyLoss;
+
+  const opex = a.units * a.opex_per_unit;
+  const propTax = tdc * (a.tax_rate_pct / 100) * (1 - a.tax_abatement / 100);
+  const noi = egi - opex - propTax;
+
+  const r12 = (a.mortgage_rate / 100) / 12;
+  const n = a.amortization_years * 12;
+  const mortConst = r12 > 0 ? (r12 / (1 - Math.pow(1 + r12, -n))) * 12 : 1 / a.amortization_years;
+
+  const lihtcEquity = tdc * (a.tax_credit_rate / 100) * (a.credit_price / 100);
+  const permDebt = noi > 0 ? noi / a.dscr_requirement / mortConst : 0;
+  const equityGap = tdc - lihtcEquity - permDebt;
+  const annualDS = permDebt * mortConst;
+  const dscr = annualDS > 0 ? noi / annualDS : 0;
+
+  const annualCF = noi - a.units * a.capex_reserve_per_unit;
+  const termVal = noi > 0 ? noi / (a.sale_cap_rate / 100) : 0;
+  const cfs = [-tdc];
+  for (let t = 1; t <= 14; t++) cfs.push(annualCF);
+  cfs.push(annualCF + termVal);
+  const irr = tdc > 0 ? calcIRR(cfs) : 0;
+  const coc = equityGap > 0 ? (noi - annualDS) / equityGap : 0;
+
+  const devYield = tdc > 0 ? noi / tdc : 0;
+
+  return { hardCosts, softCosts, tdc, grossAnnual, vacancyLoss, egi,
+           opex, propTax, noi, lihtcEquity, permDebt, equityGap,
+           annualDS, dscr, annualCF, termVal, irr, coc, devYield };
+}
+
+function calcIRR(cfs, r = 0.1) {
+  for (let i = 0; i < 300; i++) {
+    let npv = 0, d = 0;
+    for (let t = 0; t < cfs.length; t++) {
+      const p = Math.pow(1 + r, t);
+      npv += cfs[t] / p;
+      if (t > 0) d -= (t * cfs[t]) / (p * (1 + r));
+    }
+    if (Math.abs(d) < 1e-14) break;
+    const nr = r - npv / d;
+    if (Math.abs(nr - r) < 1e-10) { r = nr; break; }
+    r = nr < -0.99 ? -0.5 : nr > 10 ? 1 : nr;
+  }
+  return r;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FORMATTERS
+══════════════════════════════════════════════════════════════ */
+const $f = n => n >= 0 ? '$' + Math.round(n).toLocaleString() : '($' + Math.round(-n).toLocaleString() + ')';
+const pct = (n, d = 2) => (n * 100).toFixed(d) + '%';
+const mult = n => n.toFixed(2) + 'x';
+
+/* ══════════════════════════════════════════════════════════════
+   PRO FORMA PANEL
+══════════════════════════════════════════════════════════════ */
+function renderPF() {
+  const r = calcPF(A), a = A;
+  const irrCls = r.irr >= 0.08 ? 'good' : 'bad';
+  const dscrCls = r.dscr >= 1.15 ? 'good' : 'bad';
+
+  document.getElementById('pfPanel').innerHTML = `
+    <div class="pf-head">Pro Forma · ${a.units} units</div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">Development Costs (Uses)</div>
+      <div class="pf-row"><span class="pf-label">Land Cost ($)</span>
+        <input class="pf-in wide" type="number" min="0" value="${a.land_cost}" onchange="upd('land_cost',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Units</span>
+        <input class="pf-in" type="number" min="1" value="${a.units}" onchange="upd('units',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Avg Unit SF</span>
+        <input class="pf-in" type="number" min="1" value="${a.avg_unit_sf}" onchange="upd('avg_unit_sf',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Hard Cost / SF ($)</span>
+        <input class="pf-in" type="number" min="0" value="${a.cost_per_sf}" onchange="upd('cost_per_sf',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Hard Costs</span><span class="pf-value">${$f(r.hardCosts)}</span></div>
+      <div class="pf-row"><span class="pf-label">Soft Costs (%)</span>
+        <input class="pf-in narrow" type="number" min="0" step="1" value="${a.soft_cost_pct}" onchange="upd('soft_cost_pct',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Soft Costs</span><span class="pf-value">${$f(r.softCosts)}</span></div>
+      <div class="pf-row subtotal"><span class="pf-label">Total Dev Cost (TDC)</span><span class="pf-value">${$f(r.tdc)}</span></div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">Financing (Sources)</div>
+      <div class="pf-row"><span class="pf-label">Tax Credit Rate (%)</span>
+        <input class="pf-in narrow" type="number" step="0.5" value="${a.tax_credit_rate}" onchange="upd('tax_credit_rate',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Credit Price (¢ / $)</span>
+        <input class="pf-in narrow" type="number" step="1" value="${a.credit_price}" onchange="upd('credit_price',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">LIHTC Equity</span><span class="pf-value">${$f(r.lihtcEquity)}</span></div>
+      <div class="pf-row" style="gap:6px"><span class="pf-label">Rate (%) / Term (yr)</span>
+        <span style="display:flex;gap:4px">
+          <input class="pf-in narrow" type="number" step="0.1" value="${a.mortgage_rate}" onchange="upd('mortgage_rate',+this.value)" title="Interest rate %">
+          <input class="pf-in narrow" type="number" step="1" value="${a.amortization_years}" onchange="upd('amortization_years',+this.value)" title="Amortization years">
+        </span></div>
+      <div class="pf-row"><span class="pf-label">DSCR Requirement</span>
+        <input class="pf-in narrow" type="number" step="0.01" value="${a.dscr_requirement}" onchange="upd('dscr_requirement',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Permanent Debt</span><span class="pf-value">${$f(r.permDebt)}</span></div>
+      <div class="pf-row highlight"><span class="pf-label">Equity Gap</span>
+        <span class="pf-value" style="color:${r.equityGap <= 0 ? '#15803d' : '#7a5c00'}">${r.equityGap <= 0 ? '$0 · Fully funded' : $f(r.equityGap)}</span></div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">Income (Annual)</div>
+      <div style="font-size:0.61rem;color:#9ca3af;margin-bottom:5px">
+        Unit Mix — HUD Westchester 2024 AMI estimates
+        <span style="background:#fff3cd;color:#856404;padding:1px 5px;border-radius:3px;font-weight:700;margin-left:4px">est.</span>
+      </div>
+      ${mixRows(a)}
+      <div class="pf-row" style="margin-top:4px"><span class="pf-label">Vacancy Rate (%)</span>
+        <input class="pf-in narrow" type="number" step="0.5" value="${a.vacancy_rate}" onchange="upd('vacancy_rate',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Gross Income</span><span class="pf-value">${$f(r.grossAnnual)}</span></div>
+      <div class="pf-row"><span class="pf-label" style="color:#b91c1c">Vacancy Loss</span>
+        <span class="pf-value" style="color:#b91c1c">(${$f(r.vacancyLoss)})</span></div>
+      <div class="pf-row subtotal"><span class="pf-label">EGI</span><span class="pf-value">${$f(r.egi)}</span></div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">Expenses (Annual)</div>
+      <div class="pf-row"><span class="pf-label">OpEx / Unit / Yr ($)</span>
+        <input class="pf-in" type="number" step="100" value="${a.opex_per_unit}" onchange="upd('opex_per_unit',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Operating Expenses</span><span class="pf-value">${$f(r.opex)}</span></div>
+      <div class="pf-row"><span class="pf-label">Tax Rate (% TDC)</span>
+        <input class="pf-in narrow" type="number" step="0.1" value="${a.tax_rate_pct}" onchange="upd('tax_rate_pct',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Tax Abatement (%)</span>
+        <input class="pf-in narrow" type="number" step="5" value="${a.tax_abatement}" onchange="upd('tax_abatement',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Property Tax</span><span class="pf-value">${$f(r.propTax)}</span></div>
+      <div class="pf-row subtotal"><span class="pf-label">NOI</span><span class="pf-value">${$f(r.noi)}</span></div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">Returns</div>
+      <div class="pf-row"><span class="pf-label">CapEx Reserve / Unit / Yr ($)</span>
+        <input class="pf-in" type="number" step="50" value="${a.capex_reserve_per_unit}" onchange="upd('capex_reserve_per_unit',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">Sale Cap Rate (%)</span>
+        <input class="pf-in narrow" type="number" step="0.25" value="${a.sale_cap_rate}" onchange="upd('sale_cap_rate',+this.value)"></div>
+      <div class="pf-row"><span class="pf-label">DSCR</span>
+        <span class="pf-value ${dscrCls}">${mult(r.dscr)}</span></div>
+      <div class="pf-row subtotal"><span class="pf-label">15-Yr Unlevered IRR</span>
+        <span class="pf-value ${irrCls}">${pct(r.irr)}</span></div>
+      <div class="pf-row"><span class="pf-label">Cash-on-Cash (Yr 1)</span>
+        <span class="pf-value">${pct(r.coc)}</span></div>
+    </div>`;
+  // Sync funding stack whenever pro forma updates
+  if (document.getElementById('fsDebt')) renderFundingStack();
+}
+
+function mixRows(a) {
+  const tiers = [
+    { key: 'pct30',  rent: 'rent_30',     label: '30% AMI', color: '#b91c1c' },
+    { key: 'pct50',  rent: 'rent_50',     label: '50% AMI', color: '#d97706' },
+    { key: 'pct60',  rent: 'rent_60',     label: '60% AMI', color: '#ca8a04' },
+    { key: 'pct80',  rent: 'rent_80',     label: '80% AMI', color: '#15803d' },
+    { key: 'market', rent: 'rent_market', label: 'Market',  color: '#2563eb' },
+  ];
+  return tiers.map(t => `
+    <div class="mix-row" style="border-left-color:${t.color}">
+      <span class="mix-label">${t.label}</span>
+      <input class="pf-in narrow" type="number" step="5" value="${a['mix_' + t.key]}"
+             onchange="upd('mix_${t.key}',+this.value)" title="% of units">
+      <span class="mix-pct-label">%</span>
+      <input class="pf-in" style="width:62px" type="number" step="25" value="${a[t.rent]}"
+             onchange="upd('${t.rent}',+this.value)" title="Monthly rent $">
+    </div>`).join('');
+}
+
+function togglePF() {
+  const wrap = document.getElementById('pfWrapper');
+  const btn  = document.getElementById('pfToggle');
+  if (wrap.classList.contains('collapsed')) {
+    wrap.classList.replace('collapsed', 'open');
+    btn.textContent = '◀ PRO FORMA';
+    renderPF();
+  } else {
+    wrap.classList.replace('open', 'collapsed');
+    btn.textContent = 'PRO FORMA ▶';
+  }
+}
+
+function upd(key, val) {
+  A[key] = val;
+  renderPF();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TRACKER CHART
+══════════════════════════════════════════════════════════════ */
+function initCharts() {
+  // Chart 1 — IRR & Equity Gap
+  const ctx1 = document.getElementById('trackerChart').getContext('2d');
+  chart = new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        { label: 'IRR (%)', data: [], borderColor: '#1B2A4A', backgroundColor: 'rgba(27,42,74,0.07)',
+          yAxisID: 'yIRR', tension: 0.3, pointRadius: 5, pointHoverRadius: 8, fill: true },
+        { label: 'Equity Gap ($M)', data: [], borderColor: '#2A9D8F', backgroundColor: 'rgba(42,157,143,0.07)',
+          yAxisID: 'yGap', tension: 0.3, pointRadius: 5, pointHoverRadius: 8, fill: true },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, padding: 14, usePointStyle: true } },
+        tooltip: {
+          backgroundColor: 'rgba(27,42,74,0.93)',
+          titleFont: { size: 11, weight: 'bold' },
+          bodyFont: { size: 10 },
+          padding: 10,
+          callbacks: {
+            title(items) {
+              const s = scenarios[items[0].dataIndex];
+              return [`Scenario ${s.num}`, s.change];
+            },
+            afterBody(items) {
+              const snap = scenarios[items[0].dataIndex].assumptions;
+              return ['', '── Key Assumptions ──',
+                `Units: ${snap.units}  |  Cost/SF: $${snap.cost_per_sf}`,
+                `Vacancy: ${snap.vacancy_rate}%  |  Abatement: ${snap.tax_abatement}%`,
+                `Mix 30/50/60/80: ${snap.mix_pct30}/${snap.mix_pct50}/${snap.mix_pct60}/${snap.mix_pct80}`,
+                `Mortgage: ${snap.mortgage_rate}% / ${snap.amortization_years}yr`];
+            },
+          },
+        },
+      },
+      scales: {
+        x: { title: { display: true, text: 'Scenario #', font: { size: 11 } }, ticks: { font: { size: 10 } } },
+        yIRR: {
+          title: { display: true, text: 'IRR (%)', color: '#1B2A4A', font: { size: 11 } },
+          ticks: { color: '#1B2A4A', font: { size: 10 }, callback: v => v.toFixed(1) + '%' },
+        },
+        yGap: {
+          position: 'right',
+          title: { display: true, text: 'Equity Gap ($M)', color: '#2A9D8F', font: { size: 11 } },
+          ticks: { color: '#2A9D8F', font: { size: 10 }, callback: v => '$' + v.toFixed(2) + 'M' },
+          grid: { drawOnChartArea: false },
+        },
+      },
+    },
+  });
+
+  // Chart 2 — NOI & DSCR with minimum threshold line
+  const ctx2 = document.getElementById('dscrChart').getContext('2d');
+  chart2 = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        { label: 'NOI ($K)', data: [], borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,0.07)',
+          yAxisID: 'yNOI', tension: 0.3, pointRadius: 5, pointHoverRadius: 8, fill: true },
+        { label: 'DSCR', data: [], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.07)',
+          yAxisID: 'yDSCR', tension: 0.3, pointRadius: 5, pointHoverRadius: 8, fill: false },
+        { label: 'Min DSCR (1.15)', data: [], borderColor: '#dc2626', backgroundColor: 'transparent',
+          yAxisID: 'yDSCR', tension: 0, pointRadius: 0, borderDash: [5, 4], borderWidth: 1.5, fill: false },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, padding: 14, usePointStyle: true } },
+        tooltip: {
+          backgroundColor: 'rgba(27,42,74,0.93)',
+          titleFont: { size: 11, weight: 'bold' },
+          bodyFont: { size: 10 },
+          padding: 10,
+          filter: item => item.datasetIndex < 2,
+          callbacks: {
+            title(items) {
+              const s = scenarios[items[0].dataIndex];
+              return s ? [`Scenario ${s.num}`, s.change] : [];
+            },
+          },
+        },
+      },
+      scales: {
+        x: { title: { display: true, text: 'Scenario #', font: { size: 11 } }, ticks: { font: { size: 10 } } },
+        yNOI: {
+          title: { display: true, text: 'NOI ($K)', color: '#6366f1', font: { size: 11 } },
+          ticks: { color: '#6366f1', font: { size: 10 }, callback: v => '$' + v.toFixed(0) + 'K' },
+        },
+        yDSCR: {
+          position: 'right',
+          title: { display: true, text: 'DSCR', color: '#f59e0b', font: { size: 11 } },
+          ticks: { color: '#f59e0b', font: { size: 10 }, callback: v => v.toFixed(2) + 'x' },
+          grid: { drawOnChartArea: false },
+        },
+      },
+    },
+  });
+}
+
+// Keep old name as alias so any cached references still work
+function initChart() { initCharts(); }
+
+function addScenario(changeLabel, snap) {
+  const r = calcPF(snap);
+  const num = scenarios.length + 1;
+  scenarios.push({ num, change: changeLabel, assumptions: { ...snap }, results: r });
+
+  // Chart 1 — IRR & Equity Gap (always positive equity gap)
+  chart.data.labels.push(num);
+  chart.data.datasets[0].data.push(parseFloat((r.irr * 100).toFixed(3)));
+  chart.data.datasets[1].data.push(parseFloat((Math.max(0, r.equityGap) / 1e6).toFixed(4)));
+  chart.update('active');
+
+  // Chart 2 — NOI & DSCR with threshold line
+  chart2.data.labels.push(num);
+  chart2.data.datasets[0].data.push(parseFloat((r.noi / 1000).toFixed(2)));
+  chart2.data.datasets[1].data.push(parseFloat(r.dscr.toFixed(4)));
+  chart2.data.datasets[2].data.push(1.15); // threshold
+  chart2.update('active');
+
+  renderTable();
+  renderSummaryCard();
+}
+
+function dscrLight(dscr) {
+  if (dscr >= 1.20) return `<span class="tl-wrap"><span class="tl tl-g"></span><span class="tl-text lendable">Lendable</span></span>`;
+  if (dscr >= 1.15) return `<span class="tl-wrap"><span class="tl tl-y"></span><span class="tl-text borderline">Borderline</span></span>`;
+  return `<span class="tl-wrap"><span class="tl tl-r"></span><span class="tl-text nolend">Not lendable</span></span>`;
+}
+
+function eqGapCell(equityGap) {
+  if (equityGap <= 0) return `<span class="td-funded">$0 · Fully funded</span>`;
+  return $f(equityGap);
+}
+
+function renderTable() {
+  document.getElementById('scenarioTbody').innerHTML = [...scenarios].reverse().map(s => {
+    const r = s.results;
+    const eqGap = Math.max(0, r.equityGap);
+    const eqPerUnit = s.assumptions.units > 0 ? eqGap / s.assumptions.units : 0;
+    return `
+    <tr>
+      <td class="td-num">${s.num}</td>
+      <td class="td-change">${s.change}</td>
+      <td class="${r.irr >= 0.08 ? 'td-good' : 'td-bad'}">${pct(r.irr)}</td>
+      <td>${eqGapCell(r.equityGap)}</td>
+      <td>${dscrLight(r.dscr)} ${mult(r.dscr)}</td>
+      <td>$${Math.round(r.noi / 1000).toLocaleString()}K</td>
+      <td>${pct(r.devYield)}</td>
+      <td>$${Math.round(eqPerUnit).toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderSummaryCard() {
+  if (scenarios.length < 2) { document.getElementById('summaryCard').style.display = 'none'; return; }
+  document.getElementById('summaryCard').style.display = 'flex';
+
+  const lowestGap = scenarios.reduce((a, b) => Math.max(0, a.results.equityGap) <= Math.max(0, b.results.equityGap) ? a : b);
+  const highestIRR = scenarios.reduce((a, b) => a.results.irr >= b.results.irr ? a : b);
+  const bestDSCR  = scenarios.reduce((a, b) => a.results.dscr >= b.results.dscr ? a : b);
+
+  const gapVal = Math.max(0, lowestGap.results.equityGap);
+  document.getElementById('scBestGap').innerHTML  = `<strong>Lowest Equity Gap</strong><br>Scenario ${lowestGap.num} &mdash; ${gapVal === 0 ? '<span style="color:#15803d">Fully funded</span>' : $f(gapVal)}`;
+  document.getElementById('scBestIRR').innerHTML  = `<strong>Highest IRR</strong><br>Scenario ${highestIRR.num} &mdash; ${pct(highestIRR.results.irr)}`;
+  document.getElementById('scBestDSCR').innerHTML = `<strong>Best DSCR</strong><br>Scenario ${bestDSCR.num} &mdash; ${mult(bestDSCR.results.dscr)}`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FUNDING STACK
+══════════════════════════════════════════════════════════════ */
+function renderFundingStack() {
+  const r = calcPF(A);
+
+  // Auto-set permanent debt from pro forma
+  const debtPct = r.tdc > 0 ? (r.permDebt / r.tdc) * 100 : 0;
+  const debtInput = document.getElementById('fsDebt');
+  if (debtInput) debtInput.value = debtPct.toFixed(1);
+
+  // Read all source %s
+  const fedHist  = parseFloat(document.getElementById('fsFedHist').value)  || 0;
+  const nysHist  = parseFloat(document.getElementById('fsNYSHist').value)  || 0;
+  const lihtc    = parseFloat(document.getElementById('fsLIHTC').value)    || 0;
+  const debt     = parseFloat(debtInput.value)                             || 0;
+  const hcr      = parseFloat(document.getElementById('fsHCR').value)      || 0;
+  const county   = parseFloat(document.getElementById('fsCounty').value)   || 0;
+
+  const sourcesTotal = fedHist + nysHist + lihtc + debt + hcr + county;
+  const gapPct = Math.max(0, 100 - sourcesTotal);
+  const exceed = sourcesTotal > 100;
+
+  // Warning
+  const warnEl = document.getElementById('fsWarn');
+  warnEl.classList.toggle('show', exceed);
+
+  // Build bar segments
+  const segments = [
+    { pct: fedHist, cls: 'fs-fed-hist',  label: 'Fed Historic' },
+    { pct: nysHist, cls: 'fs-nys-hist',  label: 'NYS Historic' },
+    { pct: lihtc,   cls: 'fs-lihtc',     label: 'LIHTC' },
+    { pct: debt,    cls: 'fs-debt',      label: 'Perm Debt' },
+    { pct: hcr,     cls: 'fs-hcr',       label: 'HCR/HOME' },
+    { pct: county,  cls: 'fs-county',    label: 'County' },
+  ];
+  if (!exceed) segments.push({ pct: gapPct, cls: 'fs-gap', label: 'Gap' });
+
+  const total = exceed ? sourcesTotal : 100;
+  const bar = document.getElementById('fsBar');
+  bar.innerHTML = segments.map(seg => {
+    if (seg.pct <= 0) return '';
+    const w = (seg.pct / total * 100).toFixed(3);
+    const showLabel = seg.pct >= 4;
+    return `<div class="fs-seg ${seg.cls}" style="width:${w}%">${showLabel ? `<span class="fs-seg-label">${seg.pct.toFixed(0)}%</span>` : ''}</div>`;
+  }).join('');
+
+  // Summary line
+  const summaryEl = document.getElementById('fsSummary');
+  const gapAmt = Math.max(0, r.equityGap);
+  if (exceed) {
+    summaryEl.className = 'fs-summary gap';
+    summaryEl.textContent = 'Sources exceed TDC — reduce allocations to see equity gap';
+  } else if (gapPct < 0.01) {
+    summaryEl.className = 'fs-summary funded';
+    summaryEl.textContent = 'Equity Gap Remaining: $0 — Fully funded';
+  } else {
+    const gapDollar = r.tdc > 0 ? r.tdc * (gapPct / 100) : gapAmt;
+    summaryEl.className = 'fs-summary gap';
+    summaryEl.textContent = `Equity Gap Remaining: $${Math.round(gapDollar).toLocaleString()} (${gapPct.toFixed(1)}% of TDC)`;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHAT
+══════════════════════════════════════════════════════════════ */
+function saveKey() {
+  apiKey = document.getElementById('apiKeyInput').value.trim();
+  if (apiKey) localStorage.setItem('am_apikey', apiKey);
+  pushMsg('sys', 'API key saved.');
+}
+
+function pushMsg(type, text) {
+  const wrap = document.getElementById('chatMsgs');
+  const d = document.createElement('div');
+  d.className = 'msg ' + type;
+  d.textContent = text;
+  wrap.appendChild(d);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+async function sendMsg() {
+  const ta = document.getElementById('chatTA');
+  const btn = document.getElementById('sendBtn');
+  const text = ta.value.trim();
+  if (!text) return;
+  if (!apiKey) { pushMsg('err', 'Please enter and save your Anthropic API key first.'); return; }
+
+  pushMsg('user', text);
+  ta.value = '';
+  btn.disabled = true;
+  btn.textContent = '…';
+
+  try {
+    // Route: local proxy (Live Server) → http://localhost:3001/api/chat  (run: node proxy.js)
+    //        Vercel deployment          → /api/chat  (serverless function)
+    // Direct browser→Anthropic is blocked by CORS — the proxy handles that boundary.
+    const isLocal = location.hostname === '127.0.0.1' || location.hostname === 'localhost';
+    const endpoint = isLocal ? 'http://localhost:3001/api/chat' : '/api/chat';
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey, model: MODEL, systemPrompt: buildSysPrompt(), userMessage: text }),
+    });
+    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error?.message || `HTTP ${res.status}`); }
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+
+    const raw = data.content?.[0]?.text || '';
+    let parsed;
+    try { parsed = JSON.parse(raw); }
+    catch { const m = raw.match(/\{[\s\S]*\}/); if (!m) throw new Error('AI response not valid JSON'); parsed = JSON.parse(m[0]); }
+
+    const { explanation, ...changes } = parsed;
+    Object.keys(changes).forEach(k => { if (k in A) A[k] = changes[k]; });
+
+    const label = Object.keys(changes).length
+      ? Object.keys(changes).map(k => `${k}=${changes[k]}`).join(', ').slice(0, 80)
+      : text.slice(0, 60);
+    addScenario(label, { ...A });
+
+    if (document.getElementById('pfWrapper').classList.contains('open')) renderPF();
+    pushMsg('ai', explanation || 'Assumptions updated.');
+  } catch (e) {
+    console.error(e);
+    pushMsg('err', 'Error: ' + e.message);
+  }
+  btn.disabled = false;
+  btn.textContent = 'Send';
+}
+
+function buildSysPrompt() {
+  return `You are a financial modeling assistant for affordable housing development pro formas.
+
+Current assumptions (JSON):
+${JSON.stringify(A, null, 2)}
+
+The user will describe an assumption change in natural language. Your tasks:
+1. Identify which assumption key(s) should change.
+2. Return ONLY a JSON object with the changed fields (exact key names from above).
+3. Include an "explanation" key: 1-2 plain-English sentences describing what changed and its effect on IRR and Equity Gap.
+
+Key reference:
+- units, avg_unit_sf, cost_per_sf, land_cost, soft_cost_pct (% e.g. 25)
+- tax_credit_rate (% e.g. 9), credit_price (cents e.g. 85)
+- dscr_requirement (e.g. 1.15), mortgage_rate (% e.g. 5.5), amortization_years
+- vacancy_rate (% e.g. 5)
+- mix_pct30/50/60/80/market (% of units), rent_30/50/60/80/market ($/mo)
+- opex_per_unit ($/yr), tax_abatement (% e.g. 20), tax_rate_pct (% of TDC e.g. 1.2)
+- capex_reserve_per_unit ($/yr), sale_cap_rate (% e.g. 5.5)
+
+Return ONLY valid JSON. No markdown. No extra text.
+Example: {"tax_abatement":20,"explanation":"Tax abatement increased from 0% to 20%, reducing annual property tax expense. This improves NOI, increases debt capacity, and reduces the equity gap while boosting IRR."}`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LANDING — NAVIGATION
+══════════════════════════════════════════════════════════════ */
+function scrollToSetup(tab) {
+  document.getElementById('s3').scrollIntoView({ behavior: 'smooth' });
+  if (tab) setTimeout(() => switchTab(tab), 350);
+}
+
+function switchTab(tab) {
+  document.getElementById('tabNewBtn').classList.toggle('active', tab === 'new');
+  document.getElementById('tabUploadBtn').classList.toggle('active', tab === 'upload');
+  document.getElementById('tabNew').classList.toggle('active', tab === 'new');
+  document.getElementById('tabUpload').classList.toggle('active', tab === 'upload');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LANDING — SLIDERS
+══════════════════════════════════════════════════════════════ */
+function slv(id, pre, val, suf) {
+  document.getElementById('sv' + id).textContent = pre + val + suf;
+}
+
+function updateMix() {
+  const p30 = +document.getElementById('sl30').value;
+  const p50 = +document.getElementById('sl50').value;
+  const p60 = +document.getElementById('sl60').value;
+  const p80 = +document.getElementById('sl80').value;
+  const total = p30 + p50 + p60 + p80;
+  const market = Math.max(0, 100 - total);
+
+  document.getElementById('sv30').textContent = p30 + '%';
+  document.getElementById('sv50').textContent = p50 + '%';
+  document.getElementById('sv60').textContent = p60 + '%';
+  document.getElementById('sv80').textContent = p80 + '%';
+
+  const rem = document.getElementById('mixRemain');
+  if (total > 100) {
+    rem.textContent = `Total ${total}% — exceeds 100%`;
+    rem.className = 'mix-remain over';
+  } else {
+    rem.textContent = `Market Rate: ${market}% · Total: ${total}% ✓`;
+    rem.className = 'mix-remain';
+  }
+  if (mixDonutChart) {
+    mixDonutChart.data.datasets[0].data = [p30, p50, p60, p80, market];
+    mixDonutChart.update();
+  }
+}
+
+function initMixDonut() {
+  const ctx = document.getElementById('mixDonut').getContext('2d');
+  mixDonutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['30% AMI', '50% AMI', '60% AMI', '80% AMI', 'Market'],
+      datasets: [{ data: [20, 30, 30, 20, 0],
+        backgroundColor: ['#b91c1c', '#d97706', '#ca8a04', '#15803d', '#2A9D8F'],
+        borderWidth: 2, borderColor: '#fff' }],
+    },
+    options: {
+      responsive: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      cutout: '58%',
+      animation: { duration: 180 },
+    },
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LANDING — FILE UPLOAD
+══════════════════════════════════════════════════════════════ */
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) setFile(file);
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) setFile(file);
+}
+
+function setFile(file) {
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
+  if (!['.xlsx', '.csv', '.pdf'].includes(ext)) { alert('Please upload a .xlsx, .csv, or .pdf file.'); return; }
+  uploadedFile = file;
+  const fn = document.getElementById('uploadFname');
+  fn.textContent = '✓ ' + file.name;
+  fn.style.display = 'block';
+  document.getElementById('uploadSubmitBtn').disabled = false;
+  const note = document.getElementById('uploadNote');
+  if (note) note.style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PROJECT SUBMISSION → TOOL
+══════════════════════════════════════════════════════════════ */
+function submitProject(tab) {
+  if (tab === 'new') {
+    const p30 = +document.getElementById('sl30').value;
+    const p50 = +document.getElementById('sl50').value;
+    const p60 = +document.getElementById('sl60').value;
+    const p80 = +document.getElementById('sl80').value;
+    if (p30 + p50 + p60 + p80 > 100) { alert('Unit mix exceeds 100%. Please adjust the sliders.'); return; }
+
+    projectMeta = {
+      name: document.getElementById('projName').value.trim() || 'Untitled Project',
+      location: document.getElementById('projLoc').value.trim(),
+      units: +document.getElementById('projUnits').value || 100,
+    };
+    A = {
+      ...DEFAULTS,
+      units: projectMeta.units,
+      land_cost: +document.getElementById('projLandCost').value || 0,
+      cost_per_sf: +document.getElementById('slCost').value,
+      soft_cost_pct: +document.getElementById('slSoft').value,
+      tax_abatement: +document.getElementById('slAbate').value,
+      vacancy_rate: +document.getElementById('slVac').value,
+      tax_credit_rate: +document.getElementById('projFinancing').value,
+      mix_pct30: p30, mix_pct50: p50, mix_pct60: p60, mix_pct80: p80,
+      mix_market: Math.max(0, 100 - p30 - p50 - p60 - p80),
+    };
+  } else {
+    projectMeta = {
+      name: uploadedFile ? uploadedFile.name.replace(/\.[^/.]+$/, '') : 'Uploaded Project',
+      location: '',
+      units: +document.getElementById('upUnits').value || 100,
+    };
+    A = {
+      ...DEFAULTS,
+      units: projectMeta.units,
+      land_cost: +document.getElementById('upLandCost').value || 0,
+      cost_per_sf: +document.getElementById('slUpCost').value,
+      tax_abatement: +document.getElementById('slUpAbate').value,
+      vacancy_rate: +document.getElementById('upVacancy').value || 5,
+      tax_credit_rate: +document.getElementById('upFinancing').value,
+    };
+  }
+
+  document.getElementById('loadingOverlay').classList.add('show');
+
+  setTimeout(() => {
+    document.getElementById('loadingOverlay').classList.remove('show');
+    document.getElementById('landing').style.display = 'none';
+    const toolEl = document.getElementById('tool');
+    toolEl.classList.add('active');
+
+    // Update project bar
+    document.getElementById('pbName').textContent = projectMeta.name;
+    const parts = [projectMeta.location, projectMeta.units + ' units'].filter(Boolean);
+    document.getElementById('pbMeta').textContent = parts.join(' · ');
+
+    // Restore API key
+    if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
+
+    // Init charts if needed
+    if (!chart) initCharts();
+
+    // Reset state
+    scenarios = [];
+    chart.data.labels = [];
+    chart.data.datasets[0].data = [];
+    chart.data.datasets[1].data = [];
+    chart.update();
+    chart2.data.labels = [];
+    chart2.data.datasets[0].data = [];
+    chart2.data.datasets[1].data = [];
+    chart2.data.datasets[2].data = [];
+    chart2.update();
+    document.getElementById('summaryCard').style.display = 'none';
+    document.getElementById('chatMsgs').innerHTML = '';
+    document.getElementById('scenarioTbody').innerHTML = '';
+
+    // Seed Scenario 0
+    addScenario('Scenario 0 · Project baseline', { ...A });
+    renderFundingStack();
+    pushMsg('sys', `"${projectMeta.name}" loaded. Scenario 0 baseline set.`);
+    pushMsg('ai', 'Your baseline is ready. Describe any assumption change to explore scenarios.\n• "increase tax abatement to 20%"\n• "change vacancy to 7%"\n• "set 60% AMI units to 40% of mix"\n• "increase construction cost to $350/SF"');
+  }, 1500);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESET
+══════════════════════════════════════════════════════════════ */
+function resetToLanding() {
+  if (!confirm('Start a new project? Current scenario history will be cleared.')) return;
+  document.getElementById('tool').classList.remove('active');
+  document.getElementById('landing').style.display = '';
+  // Collapse pro forma if open
+  const pfWrap = document.getElementById('pfWrapper');
+  if (pfWrap.classList.contains('open')) {
+    pfWrap.classList.replace('open', 'collapsed');
+    document.getElementById('pfToggle').textContent = 'PRO\u00A0FORMA\u00A0▶';
+  }
+  setTimeout(() => document.getElementById('s3').scrollIntoView({ behavior: 'smooth' }), 80);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initMixDonut();
+  if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
+  document.getElementById('chatTA').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  });
+});
+</script>
+</body>
+</html>
