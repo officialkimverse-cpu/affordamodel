@@ -10,6 +10,9 @@
  *
  * Keep this terminal open while using the app on Live Server.
  * No npm install required — uses only Node.js built-ins.
+ *
+ * On Vercel, chat goes through api/chat.js instead. Each user pastes
+ * their own Anthropic key in the browser; the function only forwards it.
  */
 
 const http  = require('http');
